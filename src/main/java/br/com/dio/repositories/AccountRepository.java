@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import br.com.dio.exception.PixInUseException;
 import br.com.dio.model.AccountWallet;
 
 import static br.com.dio.repositories.CommonsRepository.checkFundsForTransaction;
@@ -14,6 +15,12 @@ public class AccountRepository {
 	
 	
 	public AccountWallet create(final List<String> pix, final long initialFunds) {
+		var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
+		for (var p : pix) {
+			if (pixInUse.contains(p)) {
+				throw new PixInUseException("O pix '" + p + "' já está em uso");
+			}
+		}
 		var newAccount = new AccountWallet(initialFunds, pix);
 		accounts.add(newAccount);
 		return newAccount;
@@ -46,8 +53,7 @@ public class AccountRepository {
 				.findFirst()
 				.orElseThrow (() -> new AccountNotFoundException("A conta com a chave pix '" + pix  + "' não existe ou foi encerrada"));
 	}
-	
-	
+		
 	public List<AccountWallet> list(){
 		return this.accounts;
 	}
