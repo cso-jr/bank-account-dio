@@ -3,6 +3,11 @@ package br.com.dio.model;
 import static br.com.dio.model.BankService.ACCOUNT;
 
 import java.util.List;
+
+import lombok.Getter;
+
+
+@Getter
 public class AccountWallet extends Wallet{
 
 	private final List<String> pix;
