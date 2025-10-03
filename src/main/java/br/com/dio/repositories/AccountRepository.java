@@ -2,14 +2,20 @@ package br.com.dio.repositories;
 
 import static br.com.dio.repositories.CommonsRepository.checkFundsForTransaction;
 
+import java.time.OffsetDateTime;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import br.com.dio.exception.AccountNotFoundException;
 import br.com.dio.exception.PixInUseException;
 import br.com.dio.model.AccountWallet;
+import br.com.dio.model.MoneyAudit;
 
 public class AccountRepository {
 
+	private static final TemporalUnit SECONDS = null;
 	private List<AccountWallet> accounts;
 	
 	
@@ -25,19 +31,19 @@ public class AccountRepository {
 		return newAccount;
 	}
 	
-	public void deposit (final String pix, final long fundsAmount) throws AccountNotFoundException {
+	public void deposit (final String pix, final long fundsAmount) {
 		var target = findByPix(pix);
 		target.addMoney(fundsAmount, "depósito");
 	}
-	
-	public long withdraw(final String pix, final long amount) throws AccountNotFoundException {
+;
+	public long withdraw(final String pix, final long amount) {
 		var source = findByPix(pix);
 		checkFundsForTransaction(source, amount);
 		source.reduceMoney(amount);
 		return amount;
 	}
 	
-	public void transferMoney(final String sourcePix, final String targetPix, final long amount) throws AccountNotFoundException {
+	public void transferMoney(final String sourcePix, final String targetPix, final long amount) {
 		var source = findByPix(sourcePix);
 		checkFundsForTransaction(source, amount);
 		var target= findByPix(targetPix);
@@ -46,7 +52,7 @@ public class AccountRepository {
 	}
 	
 	
-	public AccountWallet findByPix(final String pix) throws AccountNotFoundException {
+	public AccountWallet findByPix(final String pix) {
 		return accounts.stream()
 				.filter(a -> a.getPix().contains(pix))
 				.findFirst()
@@ -57,4 +63,10 @@ public class AccountRepository {
 		return this.accounts;
 	}
 	
+	
+	public Map<OffsetDateTime, List<MoneyAudit>> getHistory (final String pix){
+		var wallet = findByPix(pix);
+		var audit = wallet.getFinancialTransactions();
+		return audit.stream().collect(Collectors.groupingBy(t -> t.createdAt().truncatedTo(SECONDS)));
+	}
 }

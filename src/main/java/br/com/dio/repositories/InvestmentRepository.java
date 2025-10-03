@@ -63,7 +63,7 @@ public class InvestmentRepository {
 	}
 	
 	
-	public InvestmentWallet wihdraw(final String pix, final long funds) {
+	public InvestmentWallet withdraw(final String pix, final long funds) {
 		var wallet = findWalletByAccountPix(pix);
 		checkFundsForTransaction(wallet,funds);
 		wallet.getAccount().addMoney(wallet.reduceMoney(funds),wallet.getService(), "saque de investimentos");

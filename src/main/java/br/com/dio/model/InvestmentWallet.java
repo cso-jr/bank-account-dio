@@ -7,9 +7,8 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import lombok.Getter;
-import lombok.ToString;
 
-@ToString
+
 @Getter
 public class InvestmentWallet extends Wallet {
 
@@ -32,5 +31,12 @@ public class InvestmentWallet extends Wallet {
 		var money = Stream.generate(() -> new Money(history)).limit(amount).toList();
 		this.money.addAll(money);
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "InvestmentWallet [investment=" + investment + ", account=" + account + "]";
+	}
+	
+	
 
 }
