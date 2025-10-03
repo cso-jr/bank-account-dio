@@ -7,7 +7,6 @@ import java.util.List;
 
 import br.com.dio.exception.AccountsWithInvestmentException;
 import br.com.dio.exception.InvestmentNotFoundException;
-import br.com.dio.exception.PixInUseException;
 import br.com.dio.exception.WalletNotFoundException;
 import br.com.dio.model.AccountWallet;
 import br.com.dio.model.Investment;
@@ -75,8 +74,8 @@ public class InvestmentRepository {
 	}
 	
 	
-	public void updateAmount(final long percent) {
-		wallets.forEach(w -> w.updateAmount(percent));
+	public void updateAmount() {
+		wallets.forEach(w -> w.updateAmount(w.getInvestment().tax()));
 	}
 	
 	

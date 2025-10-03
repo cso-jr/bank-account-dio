@@ -1,13 +1,12 @@
 package br.com.dio.repositories;
 
+import static br.com.dio.repositories.CommonsRepository.checkFundsForTransaction;
+
 import java.util.List;
 
-import javax.security.auth.login.AccountNotFoundException;
-
+import br.com.dio.exception.AccountNotFoundException;
 import br.com.dio.exception.PixInUseException;
 import br.com.dio.model.AccountWallet;
-
-import static br.com.dio.repositories.CommonsRepository.checkFundsForTransaction;
 
 public class AccountRepository {
 
