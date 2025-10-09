@@ -38,12 +38,9 @@ public class AccountWallet extends Wallet{
 	}
 
 
-
-
-
 	@Override
 	public String toString() {
-		return super.toString() + "AccountWallet [pix=" + pix + "]";
+		return super.toString() + "AccountWallet [pix = " + pix + "]";
 	}
 	
 	

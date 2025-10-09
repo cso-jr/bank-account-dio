@@ -14,7 +14,7 @@ import br.com.dio.model.InvestmentWallet;
 
 public class InvestmentRepository {
 
-	private long nextId;
+	private long nextId = 0;
 	private final List<Investment> investments = new ArrayList<>();
 	private final List<InvestmentWallet> wallets = new ArrayList<>();
 	
@@ -29,12 +29,14 @@ public class InvestmentRepository {
 	
 	
 	public InvestmentWallet initInvestment(final AccountWallet account, final long id) {
-		var accountsInUse = wallets.stream().map(a -> a.getAccount()).toList();
-		
-			if (accountsInUse.contains(account)) {
-				throw new AccountsWithInvestmentException("A conta '" + account + "' já possui investimento");
+		if (!wallets.isEmpty()) {
+				var accountsInUse = wallets.stream().map(a -> a.getAccount()).toList();
+				
+				if (accountsInUse.contains(account)) {
+					throw new AccountsWithInvestmentException("A conta '" + account + "' já possui investimento");
+			}
 		}
-		
+	
 		var investment = findById(id);
 		checkFundsForTransaction(account, investment.initialFunds());
 		var wallet = new InvestmentWallet(investment, account, investment.initialFunds());
@@ -76,6 +78,7 @@ public class InvestmentRepository {
 	
 	public void updateAmount() {
 		wallets.forEach(w -> w.updateAmount(w.getInvestment().tax()));
+		System.out.println("O valor do investimento foi atualizado.");
 	}
 	
 	

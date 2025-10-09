@@ -34,7 +34,7 @@ public class InvestmentWallet extends Wallet {
 
 	@Override
 	public String toString() {
-		return super.toString() + "InvestmentWallet [investment=" + investment + ", account=" + account + "]";
+		return super.toString() + "\nInvestmentWallet [investment = " + investment + ", account = " + account + "]";
 	}
 	
 	
